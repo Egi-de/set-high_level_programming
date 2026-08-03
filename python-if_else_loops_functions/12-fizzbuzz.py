@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 def fizzbuzz():
-    """Print numbers 1 to 100, Fizz for multiples of 3, Buzz for 5"""
     for i in range(1, 101):
         if i % 15 == 0:
             print("FizzBuzz", end=" ")
