@@ -22,3 +22,20 @@ Create a list, append some values, and check sorted printing:
     [1, 2, 3, 4, 5]
     >>> print(my_list)
     [1, 4, 2, 3, 5]
+
+Using ``MyList`` with negative numbers
+---------------------------------------
+
+    >>> neg_list = MyList()
+    >>> neg_list.append(-2)
+    >>> neg_list.append(-5)
+    >>> neg_list.append(1)
+    >>> neg_list.print_sorted()
+    [-5, -2, 1]
+
+Using ``MyList`` with an empty list
+------------------------------------
+
+    >>> empty_list = MyList()
+    >>> empty_list.print_sorted()
+    []
