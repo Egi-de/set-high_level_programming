@@ -1,68 +1,66 @@
-#include <stdlib.h>
 #include "lists.h"
 
 /**
- * reverse_copy - creates a reversed copy of a listint_t list
- * @head: pointer to head of list
- * Return: pointer to head of reversed copy, or NULL if malloc fails
+ * reverse_list - reverses a singly linked list in place
+ * @head: pointer to the head of the list to reverse
+ * Return: pointer to the new head (old tail)
  */
-listint_t *reverse_copy(listint_t *head)
+static listint_t *reverse_list(listint_t *head)
 {
-	listint_t *new_head;
-	listint_t *new_node;
+	listint_t *prev = NULL;
+	listint_t *next;
 
-	new_head = NULL;
 	while (head != NULL)
 	{
-		new_node = malloc(sizeof(listint_t));
-		if (new_node == NULL)
-			return (NULL);
-		new_node->n = head->n;
-		new_node->next = new_head;
-		new_head = new_node;
-		head = head->next;
+		next = head->next;
+		head->next = prev;
+		prev = head;
+		head = next;
 	}
-	return (new_head);
+
+	return (prev);
 }
 
 /**
  * is_palindrome - checks if a singly linked list is a palindrome
- * @head: pointer to pointer to head of list
- * Return: 0 if not a palindrome, 1 if it is
+ * @head: pointer to pointer to the head of the list
+ *
+ * Return: 0 if it is not a palindrome, 1 if it is a palindrome
  */
 int is_palindrome(listint_t **head)
 {
-	listint_t *reversed;
-	listint_t *original;
-	listint_t *tmp;
-	int result;
+	listint_t *slow, *fast, *second_half, *p1, *p2, *tail;
+	int result = 1;
 
-	if (head == NULL || *head == NULL)
+	if (head == NULL || *head == NULL || (*head)->next == NULL)
 		return (1);
 
-	reversed = reverse_copy(*head);
-	if (reversed == NULL && *head != NULL)
-		return (0);
+	slow = *head;
+	fast = *head;
 
-	original = *head;
-	result = 1;
-	while (original != NULL && reversed != NULL)
+	while (fast != NULL && fast->next != NULL)
 	{
-		if (original->n != reversed->n)
+		slow = slow->next;
+		fast = fast->next->next;
+	}
+
+	second_half = reverse_list(slow);
+	tail = second_half;
+
+	p1 = *head;
+	p2 = second_half;
+	while (p2 != NULL)
+	{
+		if (p1->n != p2->n)
 		{
 			result = 0;
 			break;
 		}
-		original = original->next;
-		reversed = reversed->next;
+		p1 = p1->next;
+		p2 = p2->next;
 	}
 
-	while (reversed != NULL)
-	{
-		tmp = reversed->next;
-		free(reversed);
-		reversed = tmp;
-	}
+	reverse_list(tail);
 
 	return (result);
 }
